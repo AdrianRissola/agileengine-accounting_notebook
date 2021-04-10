@@ -18,17 +18,20 @@ class MeetupsComponent extends Component {
 
         //mock
         this.state.meetups = [
-            {id:"1", title:"Welcome !!!", description:"Welcome to the First meetup",
-            location:"CABA", date:"10/10/2121", subscribed:false, vacancyAvailable:2, 
+            {id:"1", admin:"adrian", title:"Welcome Mock!", description:"Welcome to the First meetup",
+            location:"CABA", date:"10/10/2121", temperature:"15.9", subscribed:false, vacancyAvailable:2, 
             subscribedPeople: 100, beersToBuy:1000 },
-            {id:"2", title:"Welcome Again", description:"Welcome Again: Second meetup",
-            location:"Belgrano", date:"11/11/2121", subscribed:true, vacancyAvailable:3,
+            {id:"2", admin:"adrian", title:"It is a Mock", description:"Welcome Again: Second meetup",
+            location:"Belgrano", date:"11/11/2121", temperature:"20", subscribed:true, vacancyAvailable:3,
             subscribedPeople: 300, beersToBuy:300 },
-            {id:"3", title:"IMA Meetup", description:"Indian Mock Ale",
-            location:"San Telmo", date:"11/11/2121", subscribed:false, vacancyAvailable:3,
+            {id:"3", admin:"adrian", title:"IMA Meetup", description:"Indian Mock Ale",
+            location:"San Telmo", date:"11/11/2121", temperature:"30", subscribed:false, vacancyAvailable:3,
             subscribedPeople: 990, beersToBuy:500 },
-            {id:"4", title:"Welcome to AMA", description:"American Mock Ale",
-            location:"Avellaneda", date:"11/12/2121", subscribed:false, vacancyAvailable:0,
+            {id:"4", admin:"adrian", title:"Welcome to AMA", description:"American Mock Ale",
+            location:"Avellaneda", date:"11/12/2121", temperature:"30.5", subscribed:false, vacancyAvailable:0,
+            subscribedPeople: 870, beersToBuy:900 },
+            {id:"5", admin:"adrian", title:"Welcome to AMA", description:"American Mock Ale",
+            location:"Quilmes", date:"11/12/2121", temperature:"25.5", subscribed:true, vacancyAvailable:0,
             subscribedPeople: 870, beersToBuy:900 }
         ]
         console.log(this.state.meetups)
@@ -66,8 +69,8 @@ class MeetupsComponent extends Component {
     
     render() {
         return (
-            <div className="container">
-                <h2 style={{color: "green"}}>Welcome {localStorage.getItem('isAdmin')== 'true'?"Admin":null} {localStorage.getItem('user')}</h2>
+            <div>
+                <h2 style={{color: "green"}}>Welcome {localStorage.getItem('isAdmin')==='true'?"Administrator":null} {localStorage.getItem('user')}</h2>
                 <h3 style={{color: "orange"}}>All meetings</h3>
                 <table>
                     <tbody>
@@ -78,22 +81,24 @@ class MeetupsComponent extends Component {
                     </tbody>
                 </table>
 
-                <div className="container">
-                    <table className="table" style={{width: "1100px"}}>
+                <div>
+                    <table className="table" style={{width: "1250px"}}>
                         <thead>
                             <tr>
-                                <th>Meeting Id</th>
+                                <th>Id</th>
+                                <th>Admin</th>
                                 <th>Title</th>
                                 <th>Description</th>
                                 <th>Location</th>
                                 <th>Date</th>
-                                <th>Vacancy Available</th>
+                                <th>Temperature</th>
+                                <th>Vacancies</th>
                                 <th>Subscribed</th>
                                 {
-                                    localStorage.getItem('isAdmin')== 'true'?
+                                    localStorage.getItem('isAdmin')==='true'?
                                     <Fragment>
-                                        <th>Subscribed People</th>
-                                        <th>Beers to buy</th>
+                                        <th>People</th>
+                                        <th>Beers</th>
                                     </Fragment>
                                     :null
                                 }
@@ -104,16 +109,18 @@ class MeetupsComponent extends Component {
                             {
                                 this.state.meetups.map(
                                     meetup =>
-                                        <tr style={{color: meetup.subscribed ? "green" : "red"}} 
+                                        <tr style={{color: meetup.vacancyAvailable===0 && !meetup.subscribed? "red" : "green"}}
                                             key={meetup.id}>
                                             <td>{meetup.id}</td>
+                                            <td>{meetup.admin}</td>
                                             <td>{meetup.title}</td>
                                             <td>{meetup.description}</td>
                                             <td>{meetup.location}</td>
                                             <td>{meetup.date}</td>
+                                            <td>{meetup.temperature}</td>
                                             <td>{meetup.vacancyAvailable}</td>
                                             <td>{meetup.subscribed.toString()}</td>
-                                            { localStorage.getItem('isAdmin')== 'true'?
+                                            { localStorage.getItem('isAdmin')==='true'?
                                                 <Fragment>
                                                     <td>{meetup.subscribedPeople}</td>
                                                     <td>{meetup.beersToBuy}</td>
@@ -127,7 +134,13 @@ class MeetupsComponent extends Component {
                                                             <button className="btn btn-success" onClick={this.subscribe(meetup.id)}>Subscribe</button>
                                                         </div>
                                                     </td>
-                                                :null
+                                                :
+                                                    <Fragment>
+                                                        {   ((meetup.subscribed))?
+                                                                <td>Already Subscribed</td>
+                                                            :<td>No Vacancy</td>
+                                                        }
+                                                    </Fragment>
                                             }
                                         </tr>
                                 )
@@ -139,7 +152,7 @@ class MeetupsComponent extends Component {
                 {
                     <div className="row">
                         <button onClick={this.props.history.goBack} className="btn btn-primary mr-2">Back</button>
-                        {localStorage.getItem('isAdmin')== 'true'?
+                        {localStorage.getItem('isAdmin')==='true'?
                             <button className="btn btn-success" onClick={this.addNewMeetup}>New Beer Meetup</button>
                             :null
                         }

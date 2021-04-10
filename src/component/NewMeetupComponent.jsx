@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import MeetupDataService from '../service/MeetupDataService';
-// import DateFnUtils from '@date-io/date-fns';
-// import { MuiPickersUtilsProvider } from 'material-ui/pickers';
-// import { KeyboeardDatePicker } from '@material-ui/pickers'
+import DateFnUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { KeyboeardDatePicker } from '@material-ui/pickers'
 
 class NewMeetupComponent extends Component {
 
@@ -23,7 +23,8 @@ class NewMeetupComponent extends Component {
                     title: '',
                     description: '',
                     date: '',
-                    maxVacancy: ''
+                    maxVacancy: '',
+                    userId: localStorage.getItem('userId')
                 }}
 
                 validationSchema={Yup.object().shape({
@@ -34,7 +35,6 @@ class NewMeetupComponent extends Component {
                 }).test('at-least-one-property', "you must provide at least one", value =>
                 !!(value.type || value.amount)
                 )}
-
 
 
                 onSubmit={fields => {
@@ -49,47 +49,54 @@ class NewMeetupComponent extends Component {
 
                 render={({ errors, status, touched }) => (
                     <Form>
-                        <h3 style={{color: "orange"}}>New meetup</h3>
+                        <div>
+                            <h3 style={{color: "orange"}}>New meetup</h3>
 
-                        <div className="form-group">
-                            <label htmlFor="title">Title</label>
-                            <Field name="title" type="text" className={'form-control' + (errors.title && touched.title ? ' is-invalid' : '')} />
-                            <ErrorMessage name="title" component="div" className="invalid-feedback" />
-                        </div>
+                            <div className="form-group">
+                                <label htmlFor="admin">Admin</label>
+                                <Field placeholder={localStorage.getItem('user')} style={{width: "500px"}} readonly="true" name="admin" type="text" className={'form-control'} />
+                                <ErrorMessage name="admin" component="div" className="invalid-feedback" />
+                            </div>
 
-                        <div className="form-group">
-                            <label htmlFor="description">Description</label>
-                            <Field name="description" type="text" className={'form-control' + (errors.description && touched.description ? ' is-invalid' : '')} />
-                            <ErrorMessage name="description" component="div" className="invalid-feedback" />
-                        </div>
+                            <div className="form-group">
+                                <label htmlFor="title">Title</label>
+                                <Field style={{width: "500px"}}  name="title" type="text" className={'form-control' + (errors.title && touched.title ? ' is-invalid' : '')} />
+                                <ErrorMessage name="title" component="div" className="invalid-feedback" />
+                            </div>
 
-                        <div className="form-group">
-                            <label htmlFor="date">Date</label>
-                            <Field name="date" type="text" className={'form-control' + (errors.date && touched.date ? ' is-invalid' : '')} />
-                            <ErrorMessage name="date" component="div" className="invalid-feedback" />
-                        </div>
-   
-                        <div className="form-group">
-                            <label htmlFor="maxVacancy">Max Vacancy</label>
-                            <Field name="maxVacancy" type="number" className={'form-control' + (errors.maxVacancy && touched.maxVacancy ? ' is-invalid' : '')} />
-                            <ErrorMessage name="maxVacancy" component="div" className="invalid-feedback" />
-                        </div>
+                            <div className="form-group">
+                                <label htmlFor="description">Description</label>
+                                <Field style={{width: "500px"}} name="description" type="text" className={'form-control' + (errors.description && touched.description ? ' is-invalid' : '')} />
+                                <ErrorMessage name="description" component="div" className="invalid-feedback" />
+                            </div>
 
-                        <div className="form-group">
-                            <button onClick={this.props.history.goBack} className="btn btn-primary mr-2">Back</button>
-                            {localStorage.getItem('isAdmin')== 'true'?
-                                <button type="submit" className="btn btn-success">Create</button>
-                                :null
+                            <div className="form-group">
+                                <label htmlFor="date">Date</label>
+                                <Field style={{width: "500px"}} name="date" type="text" className={'form-control' + (errors.date && touched.date ? ' is-invalid' : '')} />
+                                <ErrorMessage name="date" component="div" className="invalid-feedback" />
+                            </div>
+    
+                            <div className="form-group">
+                                <label htmlFor="maxVacancy">Max Vacancy</label>
+                                <Field style={{width: "500px"}} name="maxVacancy" type="number" className={'form-control' + (errors.maxVacancy && touched.maxVacancy ? ' is-invalid' : '')} />
+                                <ErrorMessage name="maxVacancy" component="div" className="invalid-feedback" />
+                            </div>
+
+                            <div className="form-group">
+                                <button onClick={this.props.history.goBack} className="btn btn-primary mr-2">Back</button>
+                                {localStorage.getItem('isAdmin')==='true'?
+                                    <button type="submit" className="btn btn-success">Create</button>
+                                    :null
+                                }
+                            </div>
+
+                            {
+                            ((touched.type||touched.amount) && !!errors)?
+                            <div className="at-least-one-property">sdasd</div>
+                            : null
                             }
+
                         </div>
-
-                        {
-                         ((touched.type||touched.amount) && !!errors)?
-                        <div className="at-least-one-property">sdasd</div>
-                        : null
-                        }
-
-
                     </Form>
 
                     

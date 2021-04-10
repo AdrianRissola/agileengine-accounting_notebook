@@ -12,7 +12,7 @@ class AccountSystemApp extends Component {
         return (
             <Router>
                 <>
-                    <h1 style={{color: "green"}}>Happy Beer Meetup</h1>
+                    <h1 style={{textAlign:"center", color: "green"}}>Happy Beer Meetup</h1>
                     <Switch>
                         <Route path="/" exact component={LoginComponent} />
                         <Route path="/login" exact component={LoginComponent} />

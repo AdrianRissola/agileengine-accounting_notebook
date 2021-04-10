@@ -5,7 +5,7 @@ import AccountSystemApp from './component/AccountSystemApp';
 class App extends Component {
   render() {
     return (
-      <div className="container">
+      <div style={{marginLeft: "50px"}}>
         <AccountSystemApp />
       </div>
     );

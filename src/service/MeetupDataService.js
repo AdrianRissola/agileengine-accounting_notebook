@@ -30,7 +30,7 @@ class MeetupDataService {
     subscribe(meetupId) {
         let userId = localStorage.getItem('userId');
         console.log('executing service subscribe with: ' + meetupId + '' + userId);
-        return axios.put(`${BASE_API_URL}${MEETUPS}${meetupId}/${userId}`,
+        return axios.put(`${BASE_API_URL}${MEETUPS}${meetupId}/users/${userId}`,
         {
             headers: { 
                 'Authorization': 'Basic xxxxxxxxxxxxxxxxxxx',

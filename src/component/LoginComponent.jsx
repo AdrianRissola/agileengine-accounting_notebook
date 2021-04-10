@@ -42,7 +42,7 @@ class NewMeetupComponent extends Component {
                     )
                     //mock
                     localStorage.setItem('user', fields.user)
-                    if(fields.user=="adrian")
+                    if(fields.user==="hernan" || fields.user==="santander")
                         localStorage.setItem('isAdmin', true)
                     else
                         localStorage.setItem('isAdmin', false)
